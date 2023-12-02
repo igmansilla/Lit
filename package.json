@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "@webcomponents/webcomponentsjs": "^2.8.0",
+    "lit": "^3.1.0",
+    "lit-element": "^4.0.2",
+    "lit-html": "^3.1.0"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "scripts": {
+    "build": "webpack --mode production",
+    "builddev": "webpack --mode development",
+    "start": "webpack-dev-server --mode development --open"
+  }
+}
