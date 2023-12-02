@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   mode: "development",
   entry: {
-    "lit-select": ["./src/lit-select.js"],
+    "lit-select": ["./src/lit-select-nuevo.js"],
   },
   output: {
     filename: "bundle[contenthash].js",

@@ -1,10 +1,11 @@
 import { Task } from "@lit/task";
-import { LitElement, css, html } from "lit-element";
+import { LitElement, html } from "lit-element";
 import { classMap } from "lit/directives/class-map.js";
+import { generateUniqueID } from "./lit-select-module";
 import { getOpciones } from "./lit-select-service";
 import { litSelectStyles } from "./lit-select-styles";
 import { pubsub } from "./publisherSubscriber";
-import { generateUniqueID } from "./lit-select-module";
+import { map } from "lit/directives/map.js";
 
 export class LitSelectNuevo extends LitElement {
   static get properties() {
@@ -46,6 +47,11 @@ export class LitSelectNuevo extends LitElement {
     return [litSelectStyles];
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    pubsub.subscribe("select-open", this.handleOpen.bind(this));
+  }
+
   _myTask = new Task(this, {
     task: async ([endpoint], { signal }) => {
       if (endpoint === undefined || endpoint === "") {
@@ -57,7 +63,7 @@ export class LitSelectNuevo extends LitElement {
     args: () => [this.endpoint],
   });
 
-  _filterList = (searchTerm) => {
+  _filterOptions = (searchTerm) => {
     this.optionsRender = this.options.filter(
       (opt) => opt.descripcion.indexOf(searchTerm.toUpperCase()) != -1
     );
@@ -76,11 +82,17 @@ export class LitSelectNuevo extends LitElement {
     this.dispatchEvent(customEvent);
     callback && callback();
   }
-  
+
   _toggleMenu() {
     if (!this.disabled) {
       pubsub.publish("select-open", this.id);
       this.closed = !this.closed;
+    }
+  }
+
+  handleOpen(id) {
+    if (this.id !== id && !this.closed) {
+      this.closed = true;
     }
   }
 
@@ -92,18 +104,19 @@ export class LitSelectNuevo extends LitElement {
             "lit-select-container": true,
             disabled: this.disabled,
           })}
+          @click=${this._toggleMenu}
         >
           ${this._myTask.render({
             initial: () => html`<p>Waiting to start task</p>`,
             pending: () => html`<span>Cargando...</span>`,
-            complete: (datos) => html` <span class="lit-select-code"
+            complete: () => html` <span class="lit-select-code"
                 >${this.value?.codigo}</span
               >
               <span class="lit-select-description"
                 >${this.value?.descripcion}</span
               >
               <span class="lit-select-icon toggle"></span>`,
-            error: (error) => html`<span>Error al obtener las opciones</span>`,
+            error: () => html`<span>Error al obtener las opciones</span>`,
           })}
         </div>
         <div
@@ -117,7 +130,7 @@ export class LitSelectNuevo extends LitElement {
             id="input"
             type="search"
             value=${this.searchText}
-            @input=${(e) => this._filtrarOpciones(e.target.value)}
+            @input=${(e) => this._filterOptions(e.target.value)}
             placeholder="Buscar..."
           />
           ${map(this.optionsRender, (option) => {
