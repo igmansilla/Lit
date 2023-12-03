@@ -1,7 +1,8 @@
 export function getOpciones(url, signal) {
   return new Promise((resolve, reject) => {
     fetch(url)
-      .then((data) => resolve(data.data))
+      .then((data) => data.json())
+      .then((data) => resolve(data))
       .catch((err) => reject(err));
   });
 }

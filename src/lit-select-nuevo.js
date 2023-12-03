@@ -33,13 +33,6 @@ export class LitSelectNuevo extends LitElement {
 
   constructor() {
     super();
-    this.endpoint = "";
-    this.value = { codigo: "0", descripcion: "Cargando..." };
-    this.options = [];
-    this.optionsDefault = [];
-    this.closed = true;
-    this.disabled = false;
-    this.codigo = "codigo";
     this.id = generateUniqueID();
   }
 
@@ -58,7 +51,10 @@ export class LitSelectNuevo extends LitElement {
         // This puts the task back into the INITIAL state
         return initialState;
       }
-      return await getOpciones(endpoint, signal);
+      const data =  await getOpciones(endpoint, signal);
+      this.optionsRender = data
+      this.value = data[0]
+      return data
     },
     args: () => [this.endpoint],
   });
@@ -107,16 +103,18 @@ export class LitSelectNuevo extends LitElement {
           @click=${this._toggleMenu}
         >
           ${this._myTask.render({
-            initial: () => html`<p>Waiting to start task</p>`,
+            initial: () => html`<p>Esperando para comenzar</p>`,
             pending: () => html`<span>Cargando...</span>`,
-            complete: () => html` <span class="lit-select-code"
-                >${this.value?.codigo}</span
-              >
-              <span class="lit-select-description"
-                >${this.value?.descripcion}</span
-              >
-              <span class="lit-select-icon toggle"></span>`,
-            error: () => html`<span>Error al obtener las opciones</span>`,
+            complete: () => {
+              return html` <span class="lit-select-code"
+                  >${this.value?.codigo}</span
+                >
+                <span class="lit-select-description"
+                  >${this.value?.descripcion}</span
+                >
+                <span class="lit-select-icon toggle"></span>`;
+            },
+            error: () => html`<span>Error al intentar obtener las opciones</span>`,
           })}
         </div>
         <div
@@ -134,7 +132,7 @@ export class LitSelectNuevo extends LitElement {
             placeholder="Buscar..."
           />
           ${map(this.optionsRender, (option) => {
-            html` <div
+            return html` <div
               class="option"
               value=${option?.codigo}
               @click=${() => this._handleMenuOption(option, this._toggleMenu())}
