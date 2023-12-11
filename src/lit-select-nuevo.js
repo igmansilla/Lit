@@ -1,11 +1,12 @@
 import { Task } from "@lit/task";
-import { LitElement, html } from "lit-element";
+import { LitElement, css, html } from "lit-element";
 import { classMap } from "lit/directives/class-map.js";
+import { map } from "lit/directives/map.js";
+import { iconoFlechita } from "./caret-down";
 import { generateUniqueID } from "./lit-select-module";
 import { getOpciones } from "./lit-select-service";
 import { litSelectStyles } from "./lit-select-styles";
 import { pubsub } from "./publisherSubscriber";
-import { map } from "lit/directives/map.js";
 
 export class LitSelectNuevo extends LitElement {
   static get properties() {
@@ -37,7 +38,9 @@ export class LitSelectNuevo extends LitElement {
   }
 
   static get styles() {
-    return [litSelectStyles];
+    return [
+      litSelectStyles,
+    ];
   }
 
   connectedCallback() {
@@ -51,10 +54,10 @@ export class LitSelectNuevo extends LitElement {
         // This puts the task back into the INITIAL state
         return initialState;
       }
-      const data =  await getOpciones(endpoint, signal);
-      this.optionsRender = data
-      this.value = data[0]
-      return data
+      const data = await getOpciones(endpoint, signal);
+      this.optionsRender = data;
+      this.value = data[0];
+      return data;
     },
     args: () => [this.endpoint],
   });
@@ -106,15 +109,23 @@ export class LitSelectNuevo extends LitElement {
             initial: () => html`<p>Esperando para comenzar</p>`,
             pending: () => html`<span>Cargando...</span>`,
             complete: () => {
-              return html` <span class="lit-select-code"
-                  >${this.value?.codigo}</span
-                >
+              return html`
+                <span class="lit-select-code">${this.value?.codigo}</span>
                 <span class="lit-select-description"
                   >${this.value?.descripcion}</span
                 >
-                <span class="lit-select-icon toggle"></span>`;
+                <span
+                  class=${classMap({
+                    "lit-select-icon": true,
+                    toggle: this.closed,
+                  })}
+                >
+                  ${iconoFlechita}
+                </span>
+              `;
             },
-            error: () => html`<span>Error al intentar obtener las opciones</span>`,
+            error: () =>
+              html`<span>Error al intentar obtener las opciones</span>`,
           })}
         </div>
         <div

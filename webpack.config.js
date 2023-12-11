@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -26,4 +26,41 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
   ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        loader: 'lit-css-loader',
+        options: {
+          specifier: 'lit-element' // defaults to `lit`
+        }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ["file-loader"],
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "svg-inline-loader",
+          },
+        ],
+      },
+      {
+        test: /\.(woff|woff2)$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            name: "[name].[ext]",
+            outputPath: "fonts/", // Puedes cambiar la carpeta de salida según tus necesidades
+          },
+        },
+      },
+    ],
+  },
 };

@@ -1,7 +1,16 @@
 import { css } from "lit-element";
 
 export const litSelectStyles = css`
-  :root {
+  @font-face {
+    font-family: "securitas bold";
+    src: url("./fonts/SecuritasPro-Bold.woff2") format("woff2"),
+      url("./fonts/SecuritasPro-Bold.woff") format("woff");
+  }
+
+  .securitas-bold {
+    font-family: "securitas bold";
+  }
+  :host {
     --color__red--100: #ff8da3;
     --color__red--200: #fe718e;
     --color__red--300: #fd566c;
@@ -33,6 +42,7 @@ export const litSelectStyles = css`
     --color__success: #8dbf3d;
     --color__warning: #f6c348;
     --color__danger: #fc273f;
+    font-family: "securitas bold";
   }
 
   .container {
@@ -82,25 +92,34 @@ export const litSelectStyles = css`
     overflow: hidden !important;
     text-overflow: ellipsis;
     align-items: center;
-    max-width: 75%;
     padding: 0.8rem 0rem;
     color: var(--color__blue--680);
   }
 
   .lit-select-icon {
     flex: 1;
+    align-items: center;
+    justify-content: center;
     display: flex;
     width: 5%;
     max-width: 5%;
-    transition: transform 0.3s linear;
+
     padding: 0.8rem 1rem 0.8rem 0.5rem;
     border-top-right-radius: 1.5rem;
     border-bottom-right-radius: 1.5rem;
-    background: url("caret-down.svg") no-repeat center center;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 16px 12px;
+  }
+  .lit-select-icon.toggle > svg {
+    transition: transform 0.3s ease;
+    transform: rotate(180deg);
+  }
+
+  .lit-select-icon:not(.toggle) > svg {
+    transition: transform 0.3s ease;
+    transform: rotate(0deg);
   }
 
   input {
