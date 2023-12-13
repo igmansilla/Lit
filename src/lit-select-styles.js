@@ -1,15 +1,18 @@
 import { css } from "lit-element";
 
 export const litSelectStyles = css`
-  @font-face {
-    font-family: "securitas bold";
+  
+@font-face {
+    font-family: 'securitas bold';
     src: url("./fonts/SecuritasPro-Bold.woff2") format("woff2"),
       url("./fonts/SecuritasPro-Bold.woff") format("woff");
   }
 
   .securitas-bold {
-    font-family: "securitas bold";
+    font-family: 'securitas bold';
   }
+
+
   :host {
     --color__red--100: #ff8da3;
     --color__red--200: #fe718e;
@@ -17,7 +20,7 @@ export const litSelectStyles = css`
     --color__red--400: #fc273f;
     --color__red--500: #d31b3d;
     --color__red--600: #aa1834;
-    --color__red--800: #641432;
+    --color__red--800: #641432; 
     --color__blue--100: #acc2dd;
     --color__blue--500: #42638c;
     --color__blue--600: #2e4869;
@@ -42,7 +45,6 @@ export const litSelectStyles = css`
     --color__success: #8dbf3d;
     --color__warning: #f6c348;
     --color__danger: #fc273f;
-    font-family: "securitas bold";
   }
 
   .container {
@@ -52,6 +54,7 @@ export const litSelectStyles = css`
   }
 
   .lit-select-container {
+    justify-content: center;
     display: flex;
     cursor: pointer;
     flex: 1;
