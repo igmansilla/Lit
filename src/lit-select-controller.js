@@ -1,25 +1,21 @@
 import { Task, initialState } from "@lit/task";
+import { getOpciones } from "./lit-select-service";
 
 export class LitSelectController {
   constructor(host) {
-    // Store a reference to the host
     this.host = host;
-    // Register for lifecycle updates
-    host.addController(this);
+
+    this.task = new Task(host, {
+      task: async ([endpoint], { signal }) => {
+        if (this.host.optionsDefault && this.host.optionsDefault.length > 0) {
+          return this.useDefaultOptions(this.host.selected);
+        }
+
+        return this.fetchOptions(endpoint, signal, this.host.selected);
+      },
+      args: () => [this.host.endpoint],
+    });
   }
-
-  _myTask = new Task(this, {
-    task: async ([endpoint], { signal }) => {
-      debugger;
-
-      if (this.host.optionsDefault && this.host.optionsDefault.length > 0) {
-        return this.useDefaultOptions(this.host.selected);
-      }
-
-      return this.fetchOptions(endpoint, signal, this.host.selected);
-    },
-    args: () => [this.endpoint],
-  });
 
   async fetchOptions(endpoint, signal, selected) {
     if (endpoint === undefined || endpoint === "") {
@@ -29,11 +25,10 @@ export class LitSelectController {
     const data = await getOpciones(endpoint, signal);
     this.host.options = data;
 
-    // Verifica si hay una opción seleccionada, y úsala si existe
     this.host.value = selected
       ? this.host.options.find(
           (opt) => opt.codigo === selected || opt.descripcion === selected
-        ) || this.host.options  [0]
+        ) || this.host.options[0]
       : this.host.options[0];
 
     this.host.optionsRender = this.host.options;
@@ -41,7 +36,6 @@ export class LitSelectController {
   }
 
   useDefaultOptions(selected) {
-    // Verifica si hay una opción seleccionada, y úsala si existe
     this.host.value = selected
       ? this.host.options.find(
           (opt) => opt.codigo === selected || opt.descripcion === selected

@@ -1,11 +1,9 @@
-import { Task, initialState } from "@lit/task";
-import { LitElement, css, html, unsafeCSS } from "lit-element";
+import { LitElement, html } from "lit-element";
 import { classMap } from "lit/directives/class-map.js";
 import { map } from "lit/directives/map.js";
 import { iconoFlechita } from "./caret-down";
-import * as font from "./fonts/SecuritasPro-Bold.woff2";
+import { LitSelectController } from "./lit-select-controller";
 import { generateUniqueID } from "./lit-select-module";
-import { getOpciones } from "./lit-select-service";
 import { litSelectStyles } from "./lit-select-styles";
 import { pubsub } from "./publisherSubscriber";
 
@@ -48,6 +46,7 @@ export class LitSelectNuevo extends LitElement {
   constructor() {
     super();
     this.id = generateUniqueID();
+    this.controller = new LitSelectController(this)
   }
 
   static get styles() {
@@ -58,44 +57,6 @@ export class LitSelectNuevo extends LitElement {
     super.connectedCallback();
     pubsub.subscribe("select-open", this.handleOpen.bind(this));
   }
-
-  async fetchOptions(endpoint, signal, selected) {
-    if (endpoint === undefined || endpoint === "") {
-      return initialState;
-    }
-
-    const data = await getOpciones(endpoint, signal);
-    this.options = data;
-
-    // Verifica si hay una opción seleccionada, y úsala si existe
-    this.value = selected
-      ? this.options.find((opt) => opt.codigo === selected || opt.descripcion === selected) || this.options[0]
-      : this.options[0];
-
-    this.optionsRender = this.options;
-    return this.options;
-  }
-
-  useDefaultOptions(selected) {
-    // Verifica si hay una opción seleccionada, y úsala si existe
-    this.value = selected
-      ? this.options.find((opt) => opt.codigo === selected || opt.descripcion === selected) || this.optionsDefault[0]
-      : this.optionsDefault[0];
-
-    this.optionsRender = this.options = this.optionsDefault;
-    return this.optionsDefault;
-  }
-
-  _myTask = new Task(this, {
-    task: async ([endpoint], { signal }) => {
-      if (this.optionsDefault && this.optionsDefault.length > 0) {
-        return this.useDefaultOptions(this.selected);
-      }
-
-      return this.fetchOptions(endpoint, signal, this.selected);
-    },
-    args: () => [this.endpoint],
-  });
 
   _filterOptions = (searchTerm) => {
     this.optionsRender = this.options.filter((opt) => {
@@ -142,7 +103,7 @@ export class LitSelectNuevo extends LitElement {
           })}
           @click=${this._toggleMenu}
         >
-          ${this._myTask.render({
+          ${this.controller.render({
             initial: () => html`<span>Esperando para comenzar</span>`,
             pending: () => html`<span>Cargando...</span>`,
             complete: () => {
