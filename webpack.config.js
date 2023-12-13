@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
   mode: "development",
   entry: {
-    "lit-select": ["./src/lit-select-nuevo.js"],
+    "lit-select": ["./src/lit-select.js"],
   },
   output: {
     filename: "bundle[contenthash].js",
