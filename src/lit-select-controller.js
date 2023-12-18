@@ -1,7 +1,10 @@
 import { Task, initialState } from "@lit/task";
-import { getOpciones } from "./lit-select-service";
+import { getOpciones } from "./lit-select-service.js";
 
 export class LitSelectController {
+
+  host; 
+
   constructor(host) {
     this.host = host;
 

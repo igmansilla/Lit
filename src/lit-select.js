@@ -1,13 +1,14 @@
-import { LitElement, html } from "lit-element";
+import { LitElement, html } from "lit";
 import { classMap } from "lit/directives/class-map.js";
 import { map } from "lit/directives/map.js";
-import { iconoFlechita } from "./caret-down";
-import { LitSelectController } from "./lit-select-controller";
-import { generateUniqueID } from "./lit-select-module";
-import { litSelectStyles } from "./lit-select-styles";
-import { pubsub } from "./publisherSubscriber";
+import { iconoFlechita } from "./caret-down.js";
+import { LitSelectController } from "./lit-select-controller.js";
+import { generateUniqueID } from "./lit-select-module.js";
+import { litSelectStyles } from "./lit-select-styles.js";
+import { pubsub } from "./publisherSubscriber.js";
 
-export class LitSelectNuevo extends LitElement {
+
+export class LitSelect extends LitElement {
   static get properties() {
     return {
       /**
@@ -77,40 +78,40 @@ export class LitSelectNuevo extends LitElement {
       <div class="container">
         <div
           class=${classMap({
-            "lit-select-container": true,
-            disabled: this.disabled,
-          })}
+      "lit-select-container": true,
+      disabled: this.disabled,
+    })}
           @click=${this._toggleMenu}
         >
           ${this.controller.render({
-            initial: () => html`<span>Esperando para comenzar</span>`,
-            pending: () => html`<span>Cargando...</span>`,
-            complete: () => {
-              return html`
+      initial: () => html`<span>Esperando para comenzar</span>`,
+      pending: () => html`<span>Cargando...</span>`,
+      complete: () => {
+        return html`
                 <span class="lit-select-code">${this.value?.codigo}</span>
                 <span class="lit-select-description securitas-bold"
                   >${this.value?.descripcion}</span
                 >
                 <span
                   class=${classMap({
-                    "lit-select-icon": true,
-                    toggle: this.closed,
-                  })}
+          "lit-select-icon": true,
+          toggle: this.closed,
+        })}
                 >
                   ${iconoFlechita}
                 </span>
               `;
-            },
-            error: () =>
-              html`<span>Error al intentar obtener las opciones</span>`,
-          })}
+      },
+      error: () =>
+        html`<span>Error al intentar obtener las opciones</span>`,
+    })}
         </div>
         <div
           class=${classMap({
-            body: true,
-            closed: this.closed,
-            open: !this.closed,
-          })}
+      body: true,
+      closed: this.closed,
+      open: !this.closed,
+    })}
         >
           <input
             id="input"
@@ -120,18 +121,18 @@ export class LitSelectNuevo extends LitElement {
             placeholder="Buscar..."
           />
           ${map(this.optionsRender, (option) => {
-            return html` <div
+      return html` <div
               class="option"
               value=${option?.codigo}
               @click=${() => this.controller._handleMenuOption(option, this._toggleMenu.bind(this))}
             >
               ${option?.descripcion}
             </div>`;
-          })}
+    })}
         </div>
       </div>
     `;
   }
 }
 
-customElements.define("lit-select-nuevo", LitSelectNuevo);
+customElements.define("lit-select", LitSelect);
