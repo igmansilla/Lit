@@ -250,4 +250,18 @@ export const litSelectStyles = css`
   ::-webkit-scrollbar-thumb:hover {
     background: #babcbc;
   }
+
+  .lit-select-error {
+    flex-grow: 1;
+    justify-content: center;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    align-items: center;
+    padding: 0.8rem 0rem;
+    color: var(--color__blue--680);
+    border-radius: 1.5rem;
+  }
+
 `;

@@ -89,7 +89,7 @@ export class LitSelect extends LitElement {
       complete: () => {
         return html`
                 <span class="lit-select-code">${this.value?.codigo}</span>
-                <span class="lit-select-description securitas-bold"
+                <span class="lit-select-description"
                   >${this.value?.descripcion}</span
                 >
                 <span
@@ -103,7 +103,7 @@ export class LitSelect extends LitElement {
               `;
       },
       error: () =>
-        html`<span>Error al intentar obtener las opciones</span>`,
+        html`<span class="lit-select-error">Error al intentar obtener las opciones</span>`,
     })}
         </div>
         <div

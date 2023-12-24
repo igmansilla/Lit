@@ -3,7 +3,7 @@ import { getOpciones } from "./lit-select-service.js";
 
 export class LitSelectController {
 
-  host; 
+  host;
 
   constructor(host) {
     this.host = host;
@@ -21,7 +21,7 @@ export class LitSelectController {
   }
 
   _filterOptions = (searchTerm) => {
-    this.host.optionsRender = this.host.options.filter((opt) => {
+    this.host.optionsRender = this.host?.options?.filter((opt) => {
       const codigoMatch = opt.codigo.indexOf(searchTerm.toUpperCase()) !== -1;
       const descripcionMatch =
         opt.descripcion.indexOf(searchTerm.toUpperCase()) !== -1;
@@ -64,8 +64,8 @@ export class LitSelectController {
       // Si strict no está presente o es false, establecer la primera opción según la lógica existente
       this.host.value = selected
         ? this.host.options.find(
-            (opt) => opt.codigo === selected || opt.descripcion === selected
-          ) || this.host.options[0]
+          (opt) => opt.codigo === selected || opt.descripcion === selected
+        ) || this.host.options[0]
         : this.host.options[0];
     }
   }
