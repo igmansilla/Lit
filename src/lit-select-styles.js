@@ -117,12 +117,12 @@ export const litSelectStyles = css`
   }
   .lit-select-icon.toggle > svg {
     transition: transform 0.3s ease;
-    transform: rotate(180deg);
+    transform: rotate(0deg);
   }
 
   .lit-select-icon:not(.toggle) > svg {
     transition: transform 0.3s ease;
-    transform: rotate(0deg);
+    transform: rotate(180deg);
   }
 
   input {
