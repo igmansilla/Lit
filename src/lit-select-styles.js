@@ -2,16 +2,9 @@ import { css } from "lit-element";
 
 export const litSelectStyles = css`
   
-@font-face {
-    font-family: 'securitas bold';
-    src: url("./fonts/SecuritasPro-Bold.woff2") format("woff2"),
-      url("./fonts/SecuritasPro-Bold.woff") format("woff");
-  }
-
-  .securitas-bold {
-    font-family: 'securitas bold';
-  }
-
+  * {
+    font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
 
   :host {
     --color__red--100: #ff8da3;
