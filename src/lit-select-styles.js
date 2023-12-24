@@ -251,7 +251,7 @@ export const litSelectStyles = css`
     background: #babcbc;
   }
 
-  .lit-select-error {
+  .lit-select-error, .lit-select-esperando, .lit-select-cargando {
     flex-grow: 1;
     justify-content: center;
     display: flex;

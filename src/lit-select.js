@@ -84,8 +84,8 @@ export class LitSelect extends LitElement {
           @click=${this._toggleMenu}
         >
           ${this.controller.render({
-      initial: () => html`<span>Esperando para comenzar</span>`,
-      pending: () => html`<span>Cargando...</span>`,
+      initial: () => html`<span class="lit-select-esperando">Esperando para comenzar</span>`,
+      pending: () => html`<span class="lit-select-cargando">Cargando...</span>`,
       complete: () => {
         return html`
                 <span class="lit-select-code">${this.value?.codigo}</span>
